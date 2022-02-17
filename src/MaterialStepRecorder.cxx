@@ -23,9 +23,7 @@
 
 
 MaterialStepRecorder::MaterialStepRecorder()
-:  AthMessaging(Gaudi::svcLocator()->service< IMessageSvc >( "MessageSvc" ),"MaterialStepRecorder"),
-   m_evtStore("StoreGateSvc/StoreGateSvc","MaterialStepRecorder"), //FIXME name should be passed in via a Config struct rather than hardcoded.
-   m_detStore("StoreGateSvc/DetectorStore","MaterialStepRecorder") //FIXME name should be passed in via a Config struct rather than hardcoded.
+:  AthMessaging(Gaudi::svcLocator()->service< IMessageSvc >( "MessageSvc" ),"MaterialStepRecorder")
 {}
 
 

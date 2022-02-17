@@ -41,13 +41,6 @@ class MaterialStepRecorder: public AthMessaging, public G4UserEventAction,
 
   private:
 
-    typedef ServiceHandle<StoreGateSvc> StoreGateSvc_t;
-     /// Pointer to StoreGate (event store by default)
-     mutable StoreGateSvc_t m_evtStore;
-     /// Pointer to StoreGate (detector store by default)
-     mutable StoreGateSvc_t m_detStore;
-
-
     TFile * OutputFile;
     TTree * MaterialTree;
 
