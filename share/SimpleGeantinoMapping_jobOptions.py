@@ -46,9 +46,6 @@ if 'myRandomSeed2' not in dir() :
 if 'myMaxEvent' not in dir() :
     myMaxEvent = 100
 
-if 'myPt' not in dir() :
-    myPt = 'pt'  # values are 'p' or 'pt'
-
 if 'myGeo' not in dir() :
     myGeo = 'ATLAS-R2-2016-00-00-00'
 
@@ -68,7 +65,7 @@ print(globalflags.ConditionsTag)
 from AthenaCommon.AthenaCommonFlags import athenaCommonFlags
 athenaCommonFlags.PoolEvgenInput.set_Off()   ### is this necessary?
 athenaCommonFlags.PoolHitsOutput = 'Hits.pool.root'
-athenaCommonFlags.EvtMax = 1000
+athenaCommonFlags.EvtMax = myMaxEvent
 
 #--- Simulation flags -----------------------------------------
 from G4AtlasApps.SimFlags import simFlags
@@ -90,7 +87,7 @@ import ParticleGun as PG
 pg = PG.ParticleGun()
 pg.sampler.pid = 999
 pg.randomSeed = 123456
-pg.sampler.mom = PG.EEtaMPhiSampler(energy=10000, eta=[myMinEta,myMaxEta])
+pg.sampler.mom = PG.EEtaMPhiSampler(energy=myMomentum, eta=[myMinEta,myMaxEta])
 topSeq += pg
 
 simFlags.RandomSeedOffset = myRandomOffset
@@ -99,31 +96,15 @@ simFlags.RandomSeedList.addSeed( "SINGLE", myRandomSeed1, myRandomSeed2 )
 from RngComps.RngCompsConf import AtRndmGenSvc
 myAtRndmGenSvc = AtRndmGenSvc()
 myAtRndmGenSvc.Seeds = ["SINGLE "+str(myRandomSeed1)+" "+str(myRandomSeed2) ]
-myAtRndmGenSvc.OutputLevel 	= VERBOSE
+myAtRndmGenSvc.OutputLevel 	= DEBUG
 myAtRndmGenSvc.EventReseeding   = False
 ServiceMgr += myAtRndmGenSvc
-
-# from TrkG4UserActions.TrkG4UserActionsConfig import getMaterialStepRecorderTool
-# from AthenaCommon.CfgGetter import addTool
-# addTool("TrkG4UserActions.TrkG4UserActionsConfig.getMaterialStepRecorderTool", "G4UA::MaterialStepRecorderTool")
-
-
-# matStepRecTool = CfgMgr.G4UA__MaterialStepRecorderTool('G4UA::MaterialStepRecorderTool')
-# matStepRecTool = getMaterialStepRecorderTool()
-# toolSvc = CfgMgr.ToolSvc()
-# toolSvc += matStepRecTool
-
-# from G4AtlasServices.G4AtlasUserActionConfig import getUserActionSvc
-# ServiceMgr += getUserActionSvc()
 
 # add the material step recording action
 
 simFlags.OptionalUserActionList.addAction('G4UA::MaterialStepRecorderTool')
 simFlags.OptionalUserActionList.addAction('SimpleStepRecorderTool')
 
-
-# simFlags.UseV2UserActions = True
-# simFlags.OptionalUserActionList.addAction('G4UA::MaterialStepRecorderTool',['BeginOfRun','BeginOfEvent','EndOfEvent','Step'])
 
 ############### The Material hit collection ##################
 
